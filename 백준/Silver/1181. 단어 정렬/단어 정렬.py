@@ -1,19 +1,11 @@
 n = int(input())
-w = []
+word = []
 for _ in range(n):
-    word = input()
-    l = list(word)
-    w.append((len(l), word))
+    word.append(input())
     
-w.sort(key=lambda x: (x[0], x[1]))
+w = list(set(word))
 
-lst = []
+w.sort(key=lambda x: (len(x), x))
 
 for i in w:
-    lst.append(i[1])
-
-result = dict.fromkeys(lst)
-result = list(result)
-
-for j in result:
-    print(j)
+       print(i)
