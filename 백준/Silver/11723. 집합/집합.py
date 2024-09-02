@@ -28,6 +28,6 @@ for _ in range(n):
         else:
             s.add(k)
     elif cmd == "all":
-        s = set([i for i in range(1, 21)])
+        s = set(range(1, 21))
     elif cmd == "empty":
         s = set()
