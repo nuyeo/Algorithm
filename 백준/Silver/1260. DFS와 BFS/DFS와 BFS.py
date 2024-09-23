@@ -1,31 +1,44 @@
+import sys
+from collections import deque
+
+input = sys.stdin.readline
+
 n, m, v = map(int, input().split())
 
-near = [[0] * (n+1) for i in range(n+1)]
+# dfs 그래프 만들기
 visited = [0] * (n+1)
+g = [[] for _ in range(n+1)]
 
-for i in range(m):
+for _ in range(m):
     a, b = map(int, input().split())
-    near[a][b] = near[b][a] = 1
+    g[a].append(b)
+    g[b].append(a)
 
-def dfs(v):
+for i in g:
+    i.sort()
+
+# dfs 함수
+def dfs(g, v, visited):
     visited[v] = 1
     print(v, end=' ')
-    for i in range(1, n+1):
-        if visited[i] == 0 and near[v][i] ==1:
-            dfs(i)
+    for i in g[v]:
+        if visited[i] == 0:
+            dfs(g, i, visited)
 
-def bfs(v):
-    queue = [v]
+# bfs 함수
+def bfs(g, v, visited):
+    q = deque([v])
     visited[v] = 0
 
-    while queue:
-        v = queue.pop(0)
-        print(v, end=' ')
-        for i in range(1, n+1):
-            if visited[i] == 1 and near[v][i] == 1:
-                queue.append(i)
+    while q:
+        p = q.popleft()
+        print(p, end=' ')
+
+        for i in g[p]:
+            if visited[i] == 1:
+                q.append(i)
                 visited[i] = 0
 
-dfs(v)
+dfs(g, v, visited)
 print()
-bfs(v)         
+bfs(g, v, visited)
