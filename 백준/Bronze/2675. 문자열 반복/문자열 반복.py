@@ -1,8 +1,6 @@
 t = int(input())
-for i in range(t):
+for _ in range(t):
     n, s = input().split()
-    arr = []
-    for j in s:
-        for k in range(int(n)):
-            arr.append(j)
-    print("".join(arr))
+    for i in s:
+        print(i*int(n), end="")
+    print()
