@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+	
+	static int[] parent;
 
 	public static void main(String[] args) throws Exception {
 		
@@ -11,42 +13,36 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int m = Integer.parseInt(st.nextToken());
 		
-		HashMap<Integer, ArrayList<Integer>> graph = new HashMap<>();
+		parent = new int [n+1];
+		for (int i = 0; i <= n; i++) parent[i] = i;
+		
+		int cnt = n;
 		
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine());
 			int u = Integer.parseInt(st.nextToken());
 			int v = Integer.parseInt(st.nextToken());
 			
-			graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
-			graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
+			// 유니온 파인드 풀이
+			if (union(u, v)) cnt--;
 		}
 		
-		boolean[] visited = new boolean[n+1];
-		int cnt = 0;
-		
-		// bfs 구현
-		for (int i = 1; i < n + 1; i++) {
-			if (!visited[i]) {
-				bfs(graph, i, visited);
-				cnt++;
-			}
-		}
-		System.out.print(cnt);
+		System.out.println(cnt);
 	}
 	
-	static void bfs(HashMap<Integer, ArrayList<Integer>> graph, int i, boolean[] visited) {
-		
-		visited[i] = true;
-		
-		if (graph.get(i) == null) return;
-		
-		for (int node : graph.get(i)) {
-			if (!visited[node]) {
-				bfs(graph, node, visited);
-			}
-		}
+	static int find(int x) {
+		if (parent[x] == x) return x;
+		return parent[x] = find(parent[x]);
 	}
 	
-
+	static boolean union(int x, int y) {
+		int rootX = find(x);
+		int rootY = find(y);
+		
+		if (rootX != rootY) {
+			parent[rootY] = rootX;
+			return true;
+		}
+		return false;
+	}
 }
